@@ -1,6 +1,7 @@
 import Card from "./components/Card"
 import styled from "styled-components"
-import { useState } from "react"
+
+import arrayShuffle from "array-shuffle"
 
 const StyledConatiner = styled.div`
   display: flex;
