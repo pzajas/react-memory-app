@@ -1,27 +1,42 @@
-import Card from "./components/Card"
-import styled from "styled-components"
-
+import { useState } from "react"
 import arrayShuffle from "array-shuffle"
+import styled from "styled-components"
+import kakashi from "./assets/kakashi.jpeg"
+import ryuzaki from "./assets/ryuzaki.jpeg"
 
-const StyledConatiner = styled.div`
-  display: flex;
-
-  li {
-    list-style: none;
-    margin-right: 5px;
-    cursor: pointer;
+const StyledContainer = styled.div`
+  img {
+    width: 300px;
+    height: 400px;
   }
 `
 
 const App = () => {
-  const picturesArray = Array.from({ length: 4 }, (_, index) => <Card id={index < 2 ? index : index - 2} />)
+  const [cards, setCards] = useState([])
+  const [counter, setCounter] = useState(0)
+
+  const imagesArray = [{ image: kakashi }, { image: ryuzaki }]
+
+  const shuffleCards = () => {
+    const shuffledCards = arrayShuffle([...imagesArray, ...imagesArray]).map(card => ({
+      image: <img src={card.image} />,
+      id: Math.random(),
+    }))
+    setCards(shuffledCards)
+    setCounter(0)
+  }
 
   return (
-    <StyledConatiner>
-      {picturesArray.map(el => (
-        <li>{el}</li>
-      ))}
-    </StyledConatiner>
+    <StyledContainer>
+      <button onClick={shuffleCards}>New Game</button>
+
+      <div>
+        {cards.map(el => (
+          <li>{el.image}</li>
+        ))}
+      </div>
+      {counter}
+    </StyledContainer>
   )
 }
 
