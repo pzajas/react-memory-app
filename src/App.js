@@ -2,7 +2,10 @@ import { useState } from "react"
 import arrayShuffle from "array-shuffle"
 import styled from "styled-components"
 import kakashi from "./assets/kakashi.jpeg"
+
+import note from "./assets/note.jpeg"
 import ryuzaki from "./assets/ryuzaki.jpeg"
+import Card from "./components/Card"
 
 const StyledContainer = styled.div`
   img {
@@ -15,7 +18,10 @@ const App = () => {
   const [cards, setCards] = useState([])
   const [counter, setCounter] = useState(0)
 
-  const imagesArray = [{ image: kakashi }, { image: ryuzaki }]
+  const [firstCard, setFirstCard] = useState(null)
+  const [secondCard, setSecondCard] = useState(null)
+
+  const imagesArray = [{ image: kakashi }, { image: note }, { image: ryuzaki }]
 
   const shuffleCards = () => {
     const shuffledCards = arrayShuffle([...imagesArray, ...imagesArray]).map(card => ({
@@ -29,12 +35,16 @@ const App = () => {
   return (
     <StyledContainer>
       <button onClick={shuffleCards}>New Game</button>
-
-      <div>
-        {cards.map(el => (
-          <li>{el.image}</li>
-        ))}
-      </div>
+      {cards.map(card => (
+        <Card
+          key={card.id}
+          card={card}
+          firstCard={firstCard}
+          secondCard={secondCard}
+          setFirstCard={setFirstCard}
+          setSecondCard={setSecondCard}
+        />
+      ))}
       {counter}
     </StyledContainer>
   )
