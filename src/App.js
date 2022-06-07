@@ -27,10 +27,13 @@ const App = () => {
     const shuffledCards = arrayShuffle([...imagesArray, ...imagesArray]).map(card => ({
       image: <img src={card.image} />,
       id: Math.random(),
+      matched: false,
     }))
     setCards(shuffledCards)
     setCounter(0)
   }
+
+  console.log(cards)
 
   return (
     <StyledContainer>
@@ -39,6 +42,7 @@ const App = () => {
         <Card
           key={card.id}
           card={card}
+          setCards={setCards}
           firstCard={firstCard}
           secondCard={secondCard}
           setFirstCard={setFirstCard}
