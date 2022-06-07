@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import konoha from "../assets/konoha.jpeg"
 
-const Card = ({ card, firstCard, secondCard, setFirstCard, setSecondCard }) => {
-  const show = () => {
+const Card = ({ card, setCards, firstCard, secondCard, setFirstCard, setSecondCard }) => {
+  const handleSetCard = () => {
     firstCard ? setSecondCard(card.image.props.src) : setFirstCard(card.image.props.src)
   }
 
@@ -14,7 +14,9 @@ const Card = ({ card, firstCard, secondCard, setFirstCard, setSecondCard }) => {
   useEffect(() => {
     if (firstCard && secondCard) {
       if (firstCard === secondCard) {
-        console.log("okey")
+        setCards(prevCards => {
+          return prevCards.map(card => (firstCard === card.image.props.src ? { ...card, matched: true } : { ...card }))
+        })
         resetCards()
       } else {
         console.log("nope")
@@ -25,7 +27,16 @@ const Card = ({ card, firstCard, secondCard, setFirstCard, setSecondCard }) => {
 
   return (
     <div>
-      {card.image} <img src={konoha} onClick={show} />
+      {card.matched ? (
+        <div>{card.image}</div>
+      ) : (
+        <div>
+          {card.image} <img src={konoha} onClick={handleSetCard} />
+        </div>
+      )}
+      {/* <div>
+        {card.image} <img src={konoha} onClick={handleSetCard} />
+      </div> */}
     </div>
   )
 }
