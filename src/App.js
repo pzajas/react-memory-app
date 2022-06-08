@@ -33,8 +33,6 @@ const App = () => {
     setCounter(0)
   }
 
-  console.log(cards)
-
   return (
     <StyledContainer>
       <button onClick={shuffleCards}>New Game</button>
@@ -47,6 +45,7 @@ const App = () => {
           secondCard={secondCard}
           setFirstCard={setFirstCard}
           setSecondCard={setSecondCard}
+          flipped={card.image.props.src === firstCard || card.image.props.src === secondCard || card.matched}
         />
       ))}
       {counter}
