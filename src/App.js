@@ -14,6 +14,11 @@ const StyledContainer = styled.div`
   }
 `
 
+const StyledGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+`
+
 const App = () => {
   const [cards, setCards] = useState([])
   const [counter, setCounter] = useState(0)
@@ -36,18 +41,22 @@ const App = () => {
   return (
     <StyledContainer>
       <button onClick={shuffleCards}>New Game</button>
-      {cards.map(card => (
-        <Card
-          key={card.id}
-          card={card}
-          setCards={setCards}
-          firstCard={firstCard}
-          secondCard={secondCard}
-          setFirstCard={setFirstCard}
-          setSecondCard={setSecondCard}
-          flipped={card.image.props.src === firstCard || card.image.props.src === secondCard || card.matched}
-        />
-      ))}
+      <StyledGrid>
+        {cards.map(card => (
+          <Card
+            key={card.id}
+            card={card}
+            setCards={setCards}
+            firstCard={firstCard}
+            secondCard={secondCard}
+            setFirstCard={setFirstCard}
+            setSecondCard={setSecondCard}
+            counter={counter}
+            setCounter={setCounter}
+          />
+        ))}
+      </StyledGrid>
+
       {counter}
     </StyledContainer>
   )
