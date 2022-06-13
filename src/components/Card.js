@@ -15,7 +15,7 @@ const StyledCard = styled.div`
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   transform: ${props => (props.cardActive ? "rotateY(180deg)" : "rotate(0deg)")};
-  pointer-events: ${props => (props.cardActive ? "none" : "auto")};
+  pointer-events: ${props => (props.cardActive || props.cardDisabled ? "none" : "auto")};
 `
 
 const StyledCardFront = styled.img`
@@ -34,7 +34,18 @@ const StyledCardBack = styled.div`
   transform: rotateY(180deg);
 `
 
-const Card = ({ card, setCards, firstCard, secondCard, setFirstCard, setSecondCard, counter, setCounter }) => {
+const Card = ({
+  card,
+  cardDisabled,
+  setCardDisabled,
+  setCards,
+  firstCard,
+  secondCard,
+  setFirstCard,
+  setSecondCard,
+  counter,
+  setCounter,
+}) => {
   const [cardActive, setCardActive] = useState(false)
 
   const handleChooseCardToFlip = () => {
@@ -46,29 +57,40 @@ const Card = ({ card, setCards, firstCard, secondCard, setFirstCard, setSecondCa
   const resetChosenCards = () => {
     setFirstCard(null)
     setSecondCard(null)
+
+    setCardDisabled(false)
   }
 
   useEffect(() => {
     if (firstCard && secondCard) {
+      setCardDisabled(true)
       if (firstCard === secondCard && cardActive) {
         setCards(prevCards => {
           return prevCards.map(card => (firstCard === card.image.props.src ? { ...card, matched: true } : card))
         })
-        resetChosenCards()
         setCounter((counter += 1))
+
+        setTimeout(() => {
+          resetChosenCards()
+        }, 800)
       } else if (cardActive && !card.matched) {
         setTimeout(() => {
           setCardActive(false)
+          resetChosenCards()
         }, 1500)
         setCounter((counter += 1))
-        resetChosenCards()
       }
     }
   }, [firstCard, secondCard])
 
   return (
     <StyledContainer>
-      <StyledCard matched={card.matched} cardActive={cardActive} onClick={handleChooseCardToFlip}>
+      <StyledCard
+        matched={card.matched}
+        cardActive={cardActive}
+        cardDisabled={cardDisabled}
+        onClick={handleChooseCardToFlip}
+      >
         <StyledCardFront src={konoha} />
         <StyledCardBack>{card.image}</StyledCardBack>
       </StyledCard>
