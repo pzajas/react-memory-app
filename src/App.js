@@ -26,6 +26,8 @@ const App = () => {
   const [firstCard, setFirstCard] = useState(null)
   const [secondCard, setSecondCard] = useState(null)
 
+  const [cardDisabled, setCardDisabled] = useState(false)
+
   const imagesArray = [{ image: kakashi }, { image: note }, { image: ryuzaki }]
 
   const shuffleCards = () => {
@@ -53,6 +55,8 @@ const App = () => {
             setSecondCard={setSecondCard}
             counter={counter}
             setCounter={setCounter}
+            cardDisabled={cardDisabled}
+            setCardDisabled={setCardDisabled}
           />
         ))}
       </StyledGrid>
