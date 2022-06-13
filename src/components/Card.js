@@ -2,20 +2,10 @@ import { useEffect, useState } from "react"
 import konoha from "../assets/konoha.jpeg"
 import styled from "styled-components"
 
-const StyledCardContainer = styled.div`
-  position: relative;
-`
-
-// const StyledGrid = styled.div`
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   grid-template-rows: 1fr;
-// `
-
 const StyledContainer = styled.div`
   position: relative;
-  width: 250px;
-  height: 320px;
+  width: 300px;
+  height: 400px;
 `
 
 const StyledCard = styled.div`
@@ -24,89 +14,65 @@ const StyledCard = styled.div`
   height: 100%;
   transform-style: preserve-3d;
   transition: all 0.5s ease;
-  transform: ${props => (props.clicked ? "rotateY(180deg)" : "rotate(0deg)")};
+  transform: ${props => (props.cardActive ? "rotateY(180deg)" : "rotate(0deg)")};
+  pointer-events: ${props => (props.cardActive ? "none" : "auto")};
 `
 
-const StyledFront = styled.div`
+const StyledCardFront = styled.img`
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  background-color: #ffc728;
-  color: #333;
   cursor: pointer;
 `
 
-const StyledBack = styled.div`
+const StyledCardBack = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  background-color: grey;
-  color: #333;
   transform: rotateY(180deg);
 `
 
-// const StyledDiv = styled.div`
-//   position: absolute;
-//   backface-visibility: hidden;
-//   top: 0;
-//   background-color: royalblue;
-//   width: 300px;
-//   height: 400px;
-//   transition: all 2s ease;
-//   transform: ${props => (props.clicked ? "rotateY(90deg)" : "rotate(0deg)")};
-//   transform-style: preserve-3d;
-//   pointer-events: ${props => (props.clicked ? "none" : "auto")};
-//   cursor: pointer;
-// `
 const Card = ({ card, setCards, firstCard, secondCard, setFirstCard, setSecondCard, counter, setCounter }) => {
-  const [clicked, setClicked] = useState(false)
+  const [cardActive, setCardActive] = useState(false)
 
-  const handleSetCard = () => {
+  const handleChooseCardToFlip = () => {
     firstCard ? setSecondCard(card.image.props.src) : setFirstCard(card.image.props.src)
 
-    setClicked(true)
+    setCardActive(true)
   }
 
-  const resetCards = () => {
+  const resetChosenCards = () => {
     setFirstCard(null)
     setSecondCard(null)
   }
 
   useEffect(() => {
     if (firstCard && secondCard) {
-      if (firstCard === secondCard && clicked) {
+      if (firstCard === secondCard && cardActive) {
         setCards(prevCards => {
           return prevCards.map(card => (firstCard === card.image.props.src ? { ...card, matched: true } : card))
         })
-        resetCards()
+        resetChosenCards()
         setCounter((counter += 1))
-      } else if (clicked && !card.matched) {
+      } else if (cardActive && !card.matched) {
         setTimeout(() => {
-          setClicked(false)
-        }, 2500)
+          setCardActive(false)
+        }, 1500)
         setCounter((counter += 1))
-        resetCards()
+        resetChosenCards()
       }
     }
   }, [firstCard, secondCard])
 
   return (
-    <StyledCardContainer>
-      {/* <StyledGrid>
-        <StyledImage>{card.image}</StyledImage>
-        <StyledDiv matched={card.matched} clicked={clicked} onClick={handleSetCard} />
-        <StyledDiv matched={card.matched} clicked={clicked} onClick={handleSetCard} />
-      </StyledGrid> */}
-
-      <StyledContainer>
-        <StyledCard matched={card.matched} clicked={clicked} onClick={handleSetCard}>
-          <StyledFront>FRONT</StyledFront>
-          <StyledBack>{card.image}</StyledBack>
-        </StyledCard>
-      </StyledContainer>
-    </StyledCardContainer>
+    <StyledContainer>
+      <StyledCard matched={card.matched} cardActive={cardActive} onClick={handleChooseCardToFlip}>
+        <StyledCardFront src={konoha} />
+        <StyledCardBack>{card.image}</StyledCardBack>
+      </StyledCard>
+    </StyledContainer>
   )
 }
 
