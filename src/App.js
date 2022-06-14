@@ -1,16 +1,17 @@
 import { useState } from "react"
 import arrayShuffle from "array-shuffle"
 import styled from "styled-components"
-import kakashi from "./assets/kakashi.jpeg"
 
-import note from "./assets/note.jpeg"
-import ryuzaki from "./assets/ryuzaki.jpeg"
+import Imoen from "./assets/Imoen.jpeg"
+import Jaheira from "./assets/Jaheira.jpeg"
+import Viconia from "./assets/Viconia.jpeg"
+import Aerie from "./assets/Aerie.jpeg"
 import Card from "./components/Card"
 
 const StyledContainer = styled.div`
   img {
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 300px;
   }
 `
 
@@ -28,7 +29,7 @@ const App = () => {
 
   const [cardDisabled, setCardDisabled] = useState(false)
 
-  const imagesArray = [{ image: kakashi }, { image: note }, { image: ryuzaki }]
+  const imagesArray = [{ image: Aerie }, { image: Imoen }, { image: Jaheira }, { image: Viconia }]
 
   const shuffleCards = () => {
     const shuffledCards = arrayShuffle([...imagesArray, ...imagesArray]).map(card => ({

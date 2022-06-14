@@ -16,6 +16,9 @@ const StyledCard = styled.div`
   transition: all 0.5s ease;
   transform: ${props => (props.cardActive ? "rotateY(180deg)" : "rotate(0deg)")};
   pointer-events: ${props => (props.cardActive || props.cardDisabled ? "none" : "auto")};
+  cursor: ${props => (props.cardActive || props.cardDisabled ? "null" : "pointer")};
+
+  /* visibility: ${props => (props.matched ? "hidden" : "visible")}; */
 `
 
 const StyledCardFront = styled.img`
@@ -23,7 +26,6 @@ const StyledCardFront = styled.img`
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  cursor: pointer;
 `
 
 const StyledCardBack = styled.div`
@@ -32,6 +34,12 @@ const StyledCardBack = styled.div`
   height: 100%;
   backface-visibility: hidden;
   transform: rotateY(180deg);
+
+  * {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 10px;
+  }
 `
 
 const Card = ({
