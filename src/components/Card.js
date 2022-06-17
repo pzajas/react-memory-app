@@ -4,8 +4,6 @@ import styled from "styled-components"
 
 const StyledContainer = styled.div`
   position: relative;
-  /* width: 50%;
-  height: 50%; */
 `
 
 const StyledCard = styled.div`
