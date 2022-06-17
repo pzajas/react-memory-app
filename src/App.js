@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import arrayShuffle from "array-shuffle"
 import styled from "styled-components"
 import Card from "./components/Card"
+import PrimaryButton from "./elements/buttons/PrimaryButton"
 
 const StyledContainer = styled.div`
-  /* height: 100vh; */
   width: calc(100vw - 60rem);
   margin: 0 auto 0 auto;
   display: grid;
@@ -42,8 +42,6 @@ const StyledGrid = styled.div`
 `
 
 const App = () => {
-  const EASY = 4
-
   const [cards, setCards] = useState([])
   const [counter, setCounter] = useState(0)
   const [imagesArrayChosenLength, setImagesArrayChosenLength] = useState(9)
@@ -80,15 +78,9 @@ const App = () => {
     <StyledContainer>
       <StyledControlPanel>
         <div>
-          <button onClick={shuffleCards} value={4}>
-            EASY
-          </button>
-          <button onClick={shuffleCards} value={8}>
-            MEDIUM
-          </button>
-          <button onClick={shuffleCards} value={15}>
-            HARD
-          </button>
+          <PrimaryButton shuffleCards={shuffleCards} value={4} />
+          <PrimaryButton shuffleCards={shuffleCards} value={8} />
+          <PrimaryButton shuffleCards={shuffleCards} value={15} />
         </div>
         {counter}
       </StyledControlPanel>
@@ -111,7 +103,6 @@ const App = () => {
           />
         ))}
       </StyledGrid>
-      {/* {counter} */}
     </StyledContainer>
   )
 }
