@@ -1,45 +1,35 @@
 import { useEffect, useState } from "react"
-import konoha from "../assets/konoha.jpeg"
+import Cover from "../assets/Images/covers/Cover.jpeg"
 import styled from "styled-components"
 
 const StyledContainer = styled.div`
   position: relative;
-  width: 300px;
-  height: 400px;
+  /* width: 50%;
+  height: 50%; */
 `
 
 const StyledCard = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 130px;
+  height: 180px;
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   transform: ${props => (props.cardActive ? "rotateY(180deg)" : "rotate(0deg)")};
   pointer-events: ${props => (props.cardActive || props.cardDisabled ? "none" : "auto")};
   cursor: ${props => (props.cardActive || props.cardDisabled ? "null" : "pointer")};
-
-  /* visibility: ${props => (props.matched ? "hidden" : "visible")}; */
 `
 
 const StyledCardFront = styled.img`
   position: absolute;
-  width: 100%;
-  height: 100%;
   backface-visibility: hidden;
 `
 
 const StyledCardBack = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 130px;
+  height: 180px;
   backface-visibility: hidden;
   transform: rotateY(180deg);
-
-  * {
-    padding: 1rem;
-    background-color: red;
-    border-radius: 10px;
-  }
 `
 
 const Card = ({
@@ -53,6 +43,8 @@ const Card = ({
   setSecondCard,
   counter,
   setCounter,
+  className,
+  imagesArrayChosenLength,
 }) => {
   const [cardActive, setCardActive] = useState(false)
 
@@ -77,7 +69,6 @@ const Card = ({
           return prevCards.map(card => (firstCard === card.image.props.src ? { ...card, matched: true } : card))
         })
         setCounter((counter += 1))
-
         setTimeout(() => {
           resetChosenCards()
         }, 800)
@@ -89,17 +80,17 @@ const Card = ({
         setCounter((counter += 1))
       }
     }
-  }, [firstCard, secondCard])
+  }, [firstCard, secondCard, imagesArrayChosenLength])
 
   return (
-    <StyledContainer>
+    <StyledContainer className={className}>
       <StyledCard
         matched={card.matched}
         cardActive={cardActive}
         cardDisabled={cardDisabled}
         onClick={handleChooseCardToFlip}
       >
-        <StyledCardFront src={konoha} />
+        <StyledCardFront src={Cover} />
         <StyledCardBack>{card.image}</StyledCardBack>
       </StyledCard>
     </StyledContainer>
