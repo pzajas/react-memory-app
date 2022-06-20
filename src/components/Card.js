@@ -8,8 +8,8 @@ const StyledContainer = styled.div`
 
 const StyledCard = styled.div`
   position: absolute;
-  width: 130px;
-  height: 180px;
+  width: 22vw;
+  height: calc(80vh / 4);
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   transform: ${props => (props.cardActive ? "rotateY(180deg)" : "rotate(0deg)")};
@@ -24,8 +24,8 @@ const StyledCardFront = styled.img`
 
 const StyledCardBack = styled.div`
   position: absolute;
-  width: 130px;
-  height: 180px;
+  width: 22vw;
+  height: calc(80vh / 4);
   backface-visibility: hidden;
   transform: rotateY(180deg);
 `
@@ -39,10 +39,11 @@ const Card = ({
   secondCard,
   setFirstCard,
   setSecondCard,
-  counter,
-  setCounter,
+  movesCounter,
+  setMovesCounter,
   className,
-  imagesArrayChosenLength,
+  cardCompleted,
+  setCardCompleted,
 }) => {
   const [cardActive, setCardActive] = useState(false)
 
@@ -66,7 +67,8 @@ const Card = ({
         setCards(prevCards => {
           return prevCards.map(card => (firstCard === card.image.props.src ? { ...card, matched: true } : card))
         })
-        setCounter((counter += 1))
+        setMovesCounter((movesCounter += 1))
+        setCardCompleted((cardCompleted += 1))
         setTimeout(() => {
           resetChosenCards()
         }, 800)
@@ -75,10 +77,10 @@ const Card = ({
           setCardActive(false)
           resetChosenCards()
         }, 1500)
-        setCounter((counter += 1))
+        setMovesCounter((movesCounter += 1))
       }
     }
-  }, [firstCard, secondCard, imagesArrayChosenLength])
+  }, [firstCard, secondCard])
 
   return (
     <StyledContainer className={className}>
