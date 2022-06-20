@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import arrayShuffle from "array-shuffle"
 import styled from "styled-components"
 import Card from "./components/Card"
-import PrimaryButton from "./elements/buttons/PrimaryButton"
+import ControlPanel from "./components/ControlPanel"
 
 const StyledContainer = styled.div`
-  width: calc(100vw - 60rem);
+  padding-top: 0.5rem;
+  width: calc(100vw - 20rem);
   margin: 0 auto 0 auto;
   display: grid;
   place-content: center;
@@ -13,45 +14,33 @@ const StyledContainer = styled.div`
   border-radius: 10px;
 
   img {
-    width: 130px;
-    height: calc(85vh / 4);
-    border: 5px #353535 solid;
+    width: 22vw;
+    height: calc(80vh / 4);
+    border: 2px #353535 solid;
     border-radius: 10px;
   }
 `
 
-const StyledControlPanel = styled.div`
-  height: 5vh;
-  margin-bottom: 15vh;
-  background-color: steelblue;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* margin: 0 0 1rem 0; */
-  border-radius: 2px;
-  z-index: 99999;
-`
-
 const StyledGrid = styled.div`
   display: grid;
-  grid-gap: 0.2rem;
+  grid-gap: 0.1rem;
   place-content: center;
-  height: 90vh;
-  grid-template-columns: 140px 140px 140px 140px;
-  grid-template-rows: calc(90vh / 4) calc(90vh / 4) calc(90vh / 4) calc(90vh / 4) calc(90vh / 4);
+  height: 84vh;
+  grid-template-columns: 24vw 24vw 24vw 24vw;
+  grid-template-rows: calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4);
 `
 
 const App = () => {
   const [cards, setCards] = useState([])
-  const [counter, setCounter] = useState(0)
-  const [imagesArrayChosenLength, setImagesArrayChosenLength] = useState(9)
+  const [movesCounter, setMovesCounter] = useState(0)
 
   const [firstCard, setFirstCard] = useState(null)
   const [secondCard, setSecondCard] = useState(null)
 
   const [cardDisabled, setCardDisabled] = useState(false)
+  const [cardCompleted, setCardCompleted] = useState(0)
 
-  function importAll(cards) {
+  const importAll = cards => {
     return cards.keys().map(cards)
   }
 
@@ -69,21 +58,20 @@ const App = () => {
       matched: false,
     }))
     setCards(shuffledCards)
-    setCounter(0)
-
-    console.log(cards)
+    setMovesCounter(0)
+    setCardCompleted(0)
   }
+
+  useEffect(() => {
+    if (cards.length !== 0 && cardCompleted === cards.length / 2) {
+      cards.every(el => (el.matched === true ? alert("U WON") : alert("SOMETHING BAD HAPPENED")))
+      setCards([])
+    }
+  }, [cards])
 
   return (
     <StyledContainer>
-      <StyledControlPanel>
-        <div>
-          <PrimaryButton shuffleCards={shuffleCards} value={4} />
-          <PrimaryButton shuffleCards={shuffleCards} value={8} />
-          <PrimaryButton shuffleCards={shuffleCards} value={15} />
-        </div>
-        {counter}
-      </StyledControlPanel>
+      <ControlPanel shuffleCards={shuffleCards} movesCounter={movesCounter} />
 
       <StyledGrid>
         {cards.map(card => (
@@ -95,11 +83,12 @@ const App = () => {
             secondCard={secondCard}
             setFirstCard={setFirstCard}
             setSecondCard={setSecondCard}
-            counter={counter}
-            setCounter={setCounter}
+            movesCounter={movesCounter}
+            setMovesCounter={setMovesCounter}
+            cardCompleted={cardCompleted}
+            setCardCompleted={setCardCompleted}
             cardDisabled={cardDisabled}
             setCardDisabled={setCardDisabled}
-            imagesArrayChosenLength={imagesArrayChosenLength}
           />
         ))}
       </StyledGrid>
