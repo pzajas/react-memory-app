@@ -31,6 +31,12 @@ const StyledGrid = styled.div`
   grid-template-rows: calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4);
 `
 
+const StyledMemoryModal = styled(MemoryModal)`
+  width: 100%;
+  height: 40vh;
+  background-color: rgba(255, 255, 255);
+`
+
 const App = () => {
   const [cards, setCards] = useState([])
   const [movesCounter, setMovesCounter] = useState(0)
@@ -41,7 +47,7 @@ const App = () => {
   const [cardDisabled, setCardDisabled] = useState(false)
   const [cardCompleted, setCardCompleted] = useState(0)
 
-  const [showMainScreen, setShowMainScreen] = useState(false)
+  const [modalIsOpen, setIsOpen] = useState(false)
 
   const importAll = cards => {
     return cards.keys().map(cards)
@@ -60,74 +66,50 @@ const App = () => {
       id: Math.random(),
       matched: false,
     }))
+    setIsOpen(false)
     setCards(shuffledCards)
     setMovesCounter(0)
     setCardCompleted(0)
+    console.log(modalIsOpen)
   }
 
   useEffect(() => {
     if (cards.length !== 0 && cardCompleted === cards.length / 2) {
-      cards.every(el => (el.matched === true ? setShowMainScreen(true) : setShowMainScreen(false)))
       setTimeout(() => {
-        setCards([])
-      }, 500)
-
-      setMovesCounter(0)
+        cards.every(el => (el.matched === true ? setIsOpen(true) : setIsOpen(false)))
+      }, 1500)
     }
   }, [cards])
 
   return (
     <StyledContainer>
       <ControlPanel shuffleCards={shuffleCards} movesCounter={movesCounter} />
-
-      {showMainScreen ? (
-        <MemoryModal />
-      ) : (
-        <StyledGrid>
-          {cards.map(card => (
-            <Card
-              key={card.id}
-              card={card}
-              setCards={setCards}
-              firstCard={firstCard}
-              secondCard={secondCard}
-              setFirstCard={setFirstCard}
-              setSecondCard={setSecondCard}
-              movesCounter={movesCounter}
-              setMovesCounter={setMovesCounter}
-              cardCompleted={cardCompleted}
-              setCardCompleted={setCardCompleted}
-              cardDisabled={cardDisabled}
-              setCardDisabled={setCardDisabled}
-            />
-          ))}
-        </StyledGrid>
-      )}
-
-      {/* {cards.length === 0 ? (
-        <div style={{ width: "100vw" }}>PPP</div>
-      ) : (
-        <StyledGrid>
-          {cards.map(card => (
-            <Card
-              key={card.id}
-              card={card}
-              setCards={setCards}
-              firstCard={firstCard}
-              secondCard={secondCard}
-              setFirstCard={setFirstCard}
-              setSecondCard={setSecondCard}
-              movesCounter={movesCounter}
-              setMovesCounter={setMovesCounter}
-              cardCompleted={cardCompleted}
-              setCardCompleted={setCardCompleted}
-              cardDisabled={cardDisabled}
-              setCardDisabled={setCardDisabled}
-            />
-          ))}
-        </StyledGrid>
-      )} */}
-      <MemoryModal />
+      <StyledMemoryModal
+        setCards={setCards}
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+        shuffleCards={shuffleCards}
+        movesCounter={movesCounter}
+      />
+      <StyledGrid>
+        {cards.map(card => (
+          <Card
+            key={card.id}
+            card={card}
+            setCards={setCards}
+            firstCard={firstCard}
+            secondCard={secondCard}
+            setFirstCard={setFirstCard}
+            setSecondCard={setSecondCard}
+            movesCounter={movesCounter}
+            setMovesCounter={setMovesCounter}
+            cardCompleted={cardCompleted}
+            setCardCompleted={setCardCompleted}
+            cardDisabled={cardDisabled}
+            setCardDisabled={setCardDisabled}
+          />
+        ))}
+      </StyledGrid>
     </StyledContainer>
   )
 }
