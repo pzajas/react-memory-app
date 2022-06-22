@@ -9,10 +9,14 @@ const StyledPrimaryButton = styled.button`
   cursor: pointer;
 `
 
-const PrimaryButton = ({ shuffleCards, value, className }) => {
+const PrimaryButton = ({ handleShuffleCards, cardsNumber, className }) => {
   return (
-    <StyledPrimaryButton onClick={shuffleCards} value={value} className={className}>
-      {value === 4 ? "Easy" : value === 6 ? "Medium" : "Hard"}
+    <StyledPrimaryButton
+      onClick={() => handleShuffleCards(cardsNumber)}
+      cardsNumber={cardsNumber}
+      className={className}
+    >
+      {cardsNumber === 4 ? "Easy" : cardsNumber === 6 ? "Medium" : "Hard"}
     </StyledPrimaryButton>
   )
 }
