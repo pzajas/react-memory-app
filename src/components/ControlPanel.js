@@ -28,13 +28,17 @@ const StyledControlCounter = styled.div`
   justify-content: center;
 `
 
-const ControlPanel = ({ shuffleCards, movesCounter }) => {
+const ControlPanel = ({ handleShuffleCards, movesCounter }) => {
+  const EASY = "EASY"
+  const MEDIUM = "MEDIUM"
+  const HARD = "HARD"
+
   return (
     <StyledControlPanel>
       <StyledButtonPanel>
-        <PrimaryButton shuffleCards={shuffleCards} value={4} />
-        <PrimaryButton shuffleCards={shuffleCards} value={6} />
-        <PrimaryButton shuffleCards={shuffleCards} value={8} />
+        <PrimaryButton handleShuffleCards={handleShuffleCards} cardsNumber={4} />
+        <PrimaryButton handleShuffleCards={handleShuffleCards} cardsNumber={6} />
+        <PrimaryButton handleShuffleCards={handleShuffleCards} cardsNumber={8} />
       </StyledButtonPanel>
 
       <StyledControlCounter>{movesCounter}</StyledControlCounter>

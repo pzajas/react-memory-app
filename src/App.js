@@ -7,7 +7,6 @@ import MemoryModal from "./components/MemoryModal"
 
 const StyledContainer = styled.div`
   padding-top: 0.5rem;
-  width: calc(100vw - 20rem);
   margin: 0 auto 0 auto;
   display: grid;
   place-content: center;
@@ -26,7 +25,7 @@ const StyledGrid = styled.div`
   display: grid;
   grid-gap: 0.1rem;
   place-content: center;
-  height: 84vh;
+  height: 79vh;
   grid-template-columns: 24vw 24vw 24vw 24vw;
   grid-template-rows: calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4) calc(83vh / 4);
 `
@@ -49,18 +48,20 @@ const App = () => {
 
   const [modalIsOpen, setIsOpen] = useState(false)
 
-  const importAll = cards => {
+  const handleImportAllImagesFromAssets = cards => {
     return cards.keys().map(cards)
   }
 
-  const importedImagesArray = importAll(require.context("./assets/Images/cards", false, /\.(png|jpe?g|svg)$/))
+  const importedImagesArray = handleImportAllImagesFromAssets(
+    require.context("./assets/Images/cards", false, /\.(png|jpe?g|svg)$/)
+  )
 
   const shuffleedImportedImagesArray = arrayShuffle(importedImagesArray)
 
-  const shuffleCards = e => {
+  const handleShuffleCards = difficultyLevel => {
     const shuffledCards = arrayShuffle([
-      ...shuffleedImportedImagesArray.slice(0, e.target.value),
-      ...shuffleedImportedImagesArray.slice(0, e.target.value),
+      ...shuffleedImportedImagesArray.slice(0, difficultyLevel),
+      ...shuffleedImportedImagesArray.slice(0, difficultyLevel),
     ]).map(card => ({
       image: <img src={card} />,
       id: Math.random(),
@@ -70,7 +71,6 @@ const App = () => {
     setCards(shuffledCards)
     setMovesCounter(0)
     setCardCompleted(0)
-    console.log(modalIsOpen)
   }
 
   useEffect(() => {
@@ -83,12 +83,11 @@ const App = () => {
 
   return (
     <StyledContainer>
-      <ControlPanel shuffleCards={shuffleCards} movesCounter={movesCounter} />
+      <ControlPanel handleShuffleCards={handleShuffleCards} movesCounter={movesCounter} />
       <StyledMemoryModal
         setCards={setCards}
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        shuffleCards={shuffleCards}
         movesCounter={movesCounter}
       />
       <StyledGrid>
