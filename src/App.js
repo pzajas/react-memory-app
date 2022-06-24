@@ -5,6 +5,9 @@ import Card from "./components/Card"
 import ControlPanel from "./components/ControlPanel"
 import MemoryModal from "./components/MemoryModal"
 
+import useSound from "use-sound"
+import gameWin from "./assets/sounds/win.wav"
+
 const StyledContainer = styled.div`
   padding-top: 0.5rem;
   margin: 0 auto 0 auto;
@@ -48,6 +51,8 @@ const App = () => {
 
   const [modalIsOpen, setIsOpen] = useState(false)
 
+  const [playWin] = useSound(gameWin)
+
   const handleImportAllImagesFromAssets = cards => {
     return cards.keys().map(cards)
   }
@@ -73,10 +78,15 @@ const App = () => {
     setCardCompleted(0)
   }
 
+  const handleShowGameWinScreen = () => {
+    setIsOpen(true)
+    playWin()
+  }
+
   useEffect(() => {
     if (cards.length !== 0 && cardCompleted === cards.length / 2) {
       setTimeout(() => {
-        cards.every(el => (el.matched === true ? setIsOpen(true) : setIsOpen(false)))
+        cards.every(el => (el.matched === true ? handleShowGameWinScreen() : setIsOpen(false)))
       }, 1500)
     }
   }, [cards])
